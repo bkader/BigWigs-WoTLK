@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<Script file="Modules\Anubrekhan.lua"/>
+<Script file="Modules\Faerlina.lua"/>
+<Script file="Modules\Gluth.lua"/>
+<Script file="Modules\Gothik.lua"/>
+<Script file="Modules\Grobbulus.lua"/>
+<Script file="Modules\Heigan.lua"/>
+<Script file="Modules\Horsemen.lua"/>
+<Script file="Modules\Kelthuzad.lua"/>
+<Script file="Modules\Loatheb.lua"/>
+<Script file="Modules\Maexxna.lua"/>
+<Script file="Modules\Noth.lua"/>
+<Script file="Modules\Patchwerk.lua"/>
+<Script file="Modules\Razuvious.lua"/>
+<Script file="Modules\Sapphiron.lua"/>
+<Script file="Modules\Thaddius.lua"/>
+</Ui>

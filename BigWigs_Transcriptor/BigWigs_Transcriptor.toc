@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: Big Wigs |cffff0000+|r|cffffffffTranscriptor|r
+## Author: Neb
+## Version: r13
+## Dependencies: BigWigs, Transcriptor
+## LoadOnDemand: 1
+## X-BigWigs-LoadOn-CoreLoaded: 1
+## X-Curse-Packaged-Version: r13
+## X-Curse-Project-Name: BigWigs_Transcriptor
+## X-Curse-Project-ID: bigwigs_transcriptor
+## X-Curse-Repository-ID: wow/bigwigs_transcriptor/mainline
+
+Locales.lua
+Transcriptor.lua

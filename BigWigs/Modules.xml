@@ -1,0 +1,22 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<!-- Core -->
+<Script file="Core\Loader.lua" />
+<Script file="Core\Core.lua"/>
+<Script file="Core\Constants.lua"/>
+<Script file="Core\BossPrototype.lua"/>
+<Script file="Core\PluginPrototype.lua"/>
+<!-- Plugins -->
+<Script file="Plugins\Colors.lua"/>
+<Script file="Plugins\Sound.lua"/>
+<Script file="Plugins\Voice.lua"/>
+<Script file="Plugins\Messages.lua"/>
+<Script file="Plugins\Bars.lua"/>
+<Script file="Plugins\Broadcast.lua"/>
+<Script file="Plugins\BossBlock.lua"/>
+<Script file="Plugins\RaidIcon.lua"/>
+<Script file="Plugins\Proximity.lua"/>
+<Script file="Plugins\Flash.lua"/>
+<Script file="Plugins\Tips.lua"/>
+<Script file="Plugins\Emphasize.lua"/>
+</Ui>

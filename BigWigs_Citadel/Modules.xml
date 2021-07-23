@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<Script file="Modules\Deathbound.lua"/>
+<Script file="Modules\Marrowgar.lua"/>
+<Script file="Modules\Deathspeaker.lua"/>
+<Script file="Modules\Deathwhisper.lua"/>
+<Script file="Modules\Gunship.lua"/>
+<Script file="Modules\Saurfang.lua"/>
+<Script file="Modules\Dogs.lua"/>
+<Script file="Modules\Festergut.lua"/>
+<Script file="Modules\Rotface.lua"/>
+<Script file="Modules\Putricide.lua"/>
+<Script file="Modules\Council.lua"/>
+<Script file="Modules\Lanathel.lua"/>
+<Script file="Modules\Valithria.lua"/>
+<Script file="Modules\Sindragosa.lua"/>
+<Script file="Modules\LichKing.lua"/>
+</Ui>

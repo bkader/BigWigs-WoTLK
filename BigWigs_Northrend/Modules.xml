@@ -1,0 +1,20 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<!-- Vault of Archavon -->
+<Script file="Modules\VaultOfArchavon\Archavon.lua"/>
+<Script file="Modules\VaultOfArchavon\Emalon.lua"/>
+<Script file="Modules\VaultOfArchavon\Koralon.lua"/>
+<Script file="Modules\VaultOfArchavon\Toravon.lua"/>
+
+<!-- The Obsidian Sanctum -->
+<Script file="Modules\TheObsidianSanctum\Sartharion.lua"/>
+
+<!-- The Ruby Sanctum -->
+<Script file="Modules\TheRubySanctum\Baltharus.lua" />
+<Script file="Modules\TheRubySanctum\Saviana.lua" />
+<Script file="Modules\TheRubySanctum\Zarithrian.lua" />
+<Script file="Modules\TheRubySanctum\Halion.lua" />
+
+<!-- The Eye of Eternity -->
+<Script file="Modules\TheEyeOfEternity\Malygos.lua"/>
+</Ui>

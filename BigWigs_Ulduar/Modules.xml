@@ -1,0 +1,26 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<!-- The Siege of Ulduar -->
+<Script file="Modules\Leviathan.lua"/>
+<Script file="Modules\Ignis.lua"/>
+<Script file="Modules\Razorscale.lua"/>
+<Script file="Modules\XT-002.lua"/>
+
+<!-- The Antechamber of Ulduar -->
+<Script file="Modules\IronCouncil.lua"/>
+<Script file="Modules\Kologarn.lua"/>
+<Script file="Modules\Auriaya.lua"/>
+
+<!-- The Keepers of Ulduar -->
+<Script file="Modules\Freya.lua"/>
+<Script file="Modules\Hodir.lua"/>
+<Script file="Modules\Mimiron.lua"/>
+<Script file="Modules\Thorim.lua"/>
+
+<!-- The Descent into Madness -->
+<Script file="Modules\Vezax.lua"/>
+<Script file="Modules\YoggSaron.lua"/>
+
+<!-- Celestial Planetarium -->
+<Script file="Modules\Algalon.lua"/>
+</Ui>
