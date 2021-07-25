@@ -294,11 +294,17 @@ end
 
 do
 	local str = "\124TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d.blp:15:-5\124t %s"
+	local alreadyHugged = {}
 	local function ValkyrHugCheck()
 		for i = 1, GetNumRaidMembers() do
 			local n = GetRaidRosterInfo(i)
-			if UnitInVehicle(n) then
+			-- we add the player if not already hugged
+			if UnitInVehicle(n) and not alreadyHugged[n] then
 				hugged[#hugged + 1] = {n, #hugged + 2}
+				alreadyHugged[n] = true
+			-- clear if not hugged but found in the table
+			elseif not UnitInVehicle(n) and alreadyHugged[n] then
+				alreadyHugged[n] = nil
 			end
 		end
 		mod:TargetMessage(69037, L["valkyrhug_message"], hugged, "Urgent", 71844)
