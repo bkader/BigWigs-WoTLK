@@ -19,8 +19,7 @@ end
 
 L = BigWigs:NewBossLocale("Lady Deathwhisper", "esES")
 if L then
-	L.engage_trigger =
-		"¿Qué es este alboroto? ¿Osáis entrar en suelo sagrado? ¡Este será vuestro lugar de reposo final!"
+	L.engage_trigger = "¿Qué es este alboroto? ¿Osáis entrar en suelo sagrado? ¡Este será vuestro lugar de reposo final!"
 	L.phase2_message = "¡Barrera BAJA - Fase 2!"
 
 	L.dnd_message = "¡Muerte y Descomposición en TÍ!"

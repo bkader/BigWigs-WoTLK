@@ -17,7 +17,7 @@ if L then
 	L.prison_message = "¡Prisión de las Sombras x%d!"
 end
 
-L = BigWigs:NewBossLocale("Lady Deathwhisper", "esES")
+L = BigWigs:NewBossLocale("Lady Deathwhisper", "esMX")
 if L then
 	L.engage_trigger =
 		"¿Qué es este alboroto? ¿Osáis entrar en suelo sagrado? ¡Este será vuestro lugar de reposo final!"
@@ -41,7 +41,7 @@ if L then
 	L.dominate_bar = "~Siguiente Dominar mente"
 end
 
-L = BigWigs:NewBossLocale("Festergut", "esES")
+L = BigWigs:NewBossLocale("Festergut", "esMX")
 if L then
 	L.engage_trigger = "¿A divertirse?"
 
@@ -59,7 +59,7 @@ if L then
 	L.ball_message = "¡Lanzando Moco maleable!"
 end
 
-L = BigWigs:NewBossLocale("Icecrown Gunship Battle", "esES")
+L = BigWigs:NewBossLocale("Icecrown Gunship Battle", "esMX")
 if L then
 	L.adds = "Portal"
 	L.adds_desc = "Avisar Portal."
@@ -80,9 +80,9 @@ if L then
 	L.disable_trigger_horde = "Onward to the Lich King"
 end
 
-L = BigWigs:NewBossLocale("Blood-Queen Lana'thel", "esES")
+L = BigWigs:NewBossLocale("Blood-Queen Lana'thel", "esMX")
 if L then
-	L.engage_trigger = "Habéis tomado una... decisión... incorrecta."
+	L.engage_trigger = "Han tomado una... decisión... necia."
 
 	L.shadow = "Sombras"
 	L.shadow_message = "Sombras"
@@ -98,7 +98,7 @@ if L then
 	L.phase2_bar = "Fase aérea"
 end
 
-L = BigWigs:NewBossLocale("The Lich King", "esES")
+L = BigWigs:NewBossLocale("The Lich King", "esMX")
 if L then
 	L.warmup_trigger = "¿Así que por fin ha llegado la elogiada justicia de la Luz?"
 	L.engage_trigger = "Te mantendré vivo para presenciar el final, Vadín"
@@ -145,7 +145,7 @@ if L then
 	L.frenzy_soon_message = "¡5sec para frenesí!"
 end
 
-L = BigWigs:NewBossLocale("Lord Marrowgar", "esES")
+L = BigWigs:NewBossLocale("Lord Marrowgar", "esMX")
 if L then
 	L.impale_cd = "~Siguiente empalar"
 
@@ -157,12 +157,12 @@ if L then
 	L.engage_trigger = "¡La Plaga arrasará este mundo como un enjambre de muerte y destrucción!"
 end
 
-L = BigWigs:NewBossLocale("Putricide Dogs", "esES")
+L = BigWigs:NewBossLocale("Putricide Dogs", "esMX")
 if L then
 	L.wound_message = "%2$dx Blessure mortelle sur %1$s"
 end
 
-L = BigWigs:NewBossLocale("Professor Putricide", "esES")
+L = BigWigs:NewBossLocale("Professor Putricide", "esMX")
 if L then
 	L.phase = "Fases"
 	L.phase_desc = "Avisar cambios de fase."
@@ -189,7 +189,7 @@ if L then
 	L.unbound_bar = "Peste desatada: %s"
 end
 
-L = BigWigs:NewBossLocale("Rotface", "esES")
+L = BigWigs:NewBossLocale("Rotface", "esMX")
 if L then
 	L.engage_trigger = "¡WEEEEEEE!"
 
@@ -203,7 +203,7 @@ if L then
 	L.spray_bar = "Siguiente Pulverizador"
 end
 
-L = BigWigs:NewBossLocale("Deathbringer Saurfang", "esES")
+L = BigWigs:NewBossLocale("Deathbringer Saurfang", "esMX")
 if L then
 	L.adds = "Bestias de sangre"
 	L.adds_desc = "Shows a timer and messages for when Blood Beasts spawn."
@@ -216,11 +216,11 @@ if L then
 	L.mark = "Marca %d"
 
 	L.engage_trigger = "¡POR EL PODER DEL REY EXÁNIME!"
-	L.warmup_alliance = "¡Entonces movámonos! ¡Sali...!"
+	L.warmup_alliance = "¡Entonces, vámonos! ¡Sali...!"
 	L.warmup_horde = "Kor'kron, move out! Champions, watch your backs. The Scourge have been..."
 end
 
-L = BigWigs:NewBossLocale("Sindragosa", "esES")
+L = BigWigs:NewBossLocale("Sindragosa", "esMX")
 if L then
 	L.engage_trigger = "¡Estáis locos por haber venido aquí!"
 
@@ -248,7 +248,7 @@ if L then
 	L.buffet_cd = "Siguiente Sacudida mística"
 end
 
-L = BigWigs:NewBossLocale("Valithria Dreamwalker", "esES")
+L = BigWigs:NewBossLocale("Valithria Dreamwalker", "esMX")
 if L then
 	L.engage_trigger = "Han entrado intrusos en el Sagrario Interior."
 
@@ -272,7 +272,7 @@ if L then
 	L.blazing_warning = "¡Esqueleto llameante pronto!"
 end
 
-L = BigWigs:NewBossLocale("Putricide Dogs", "esES")
+L = BigWigs:NewBossLocale("Putricide Dogs", "esMX")
 if L then
 	L.wound_message = "%2$dx Herida mortal en %1$s"
 end

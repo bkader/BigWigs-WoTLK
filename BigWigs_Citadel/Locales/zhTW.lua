@@ -19,7 +19,7 @@ end
 
 L = BigWigs:NewBossLocale("Blood-Queen Lana'thel", "zhTW")
 if L then
-	L.engage_trigger = "你做了一個…不明智的…選擇。"
+	L.engage_trigger = "你做了一個...不明智的...選擇。"
 
 	L.shadow = "群聚暗影"
 	L.shadow_message = "群聚暗影！"

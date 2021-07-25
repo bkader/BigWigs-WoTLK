@@ -163,7 +163,7 @@ end
 -- Blood-Queen Lana'thel
 L = BigWigs:NewBossLocale("Blood-Queen Lana'thel", "frFR")
 if L then
-	L.engage_trigger = "Ce n'est pas une décision... très sage." -- à vérifier
+	L.engage_trigger = "Ce n'est pas une décision… très sage." -- à vérifier
 
 	L.shadow = "Les ombres"
 	L.shadow_message = "Ombres"
