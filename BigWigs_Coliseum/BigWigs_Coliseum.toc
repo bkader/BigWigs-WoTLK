@@ -5,10 +5,12 @@
 ## X-Curse-Repository-ID: wow/big-wigs/mainline
 
 ## Title: Big Wigs [|cffeda55fThe Argent Coliseum|r]
-## Title-ruRU: Big Wigs [|cffeda55fКолизей Серебряного Авангарда|r]
 ## Title-deDE: Big Wigs [|cffeda55fArgentumkollosseum|r]
-## Title-koKR: Big Wigs [|cffeda55f십자군 원형경기장|r]
+## Title-esES: Big Wigs [|cffeda55fColiseo de los Cruzados|r]
+## Title-esMX: Big Wigs [|cffeda55fColiseo de los Cruzados|r]
 ## Title-frFR: Big Wigs [|cffeda55fLe colisée d'Argent|r]
+## Title-koKR: Big Wigs [|cffeda55f십자군 원형경기장|r]
+## Title-ruRU: Big Wigs [|cffeda55fКолизей Серебряного Авангарда|r]
 ## Title-zhCN: Big Wigs [|cffeda55f银色竞技场|r]
 ## Title-zhTW: Big Wigs [|cffeda55f銀白大競技場|r]
 ## Notes: Big Wigs Modules for The Argent Coliseum

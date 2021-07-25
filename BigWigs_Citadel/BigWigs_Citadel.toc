@@ -5,10 +5,12 @@
 ## X-Curse-Repository-ID: wow/big-wigs/mainline
 
 ## Title: Big Wigs [|cffeda55fIcecrown Citadel|r]
-## Title-frFR: Big Wigs [|cffeda55fCitadelle de la Couronne de glace|r]
 ## Title-deDE: Big Wigs [|cffeda55fEiskronenzitadelle|r]
-## Title-ruRU: Big Wigs [|cffeda55fЦитадель Ледяной Короны|r]
+## Title-esES: Big Wigs [|cffeda55fCiudadela de la Corona de Hielo|r]
+## Title-esMX: Big Wigs [|cffeda55fCiudadela de la Corona de Hielo|r]
+## Title-frFR: Big Wigs [|cffeda55fCitadelle de la Couronne de glace|r]
 ## Title-koKR: Big Wigs [|cffeda55f얼음왕관 성채|r]
+## Title-ruRU: Big Wigs [|cffeda55fЦитадель Ледяной Короны|r]
 ## Title-zhCN: Big Wigs [|cffeda55f冰冠堡垒|r]
 ## Title-zhTW: Big Wigs [|cffeda55f冰冠城塞|r]
 ## Notes: Big Wigs Modules for Icecrown Citadel
