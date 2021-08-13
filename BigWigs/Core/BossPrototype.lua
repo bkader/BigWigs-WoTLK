@@ -491,13 +491,21 @@ do
 		if type(key) == "nil" then
 			return nil
 		end
-		local class = select(2, UnitClass(key))
-		if class then
-			self[key] = hexColors[class] .. key .. "|r"
+
+		local name, icon
+		if type(key) == "table" then
+			name, icon = key[1], key[2]
 		else
-			return key
+			name, icon = key, nil
 		end
-		return self[key]
+
+		local class = select(2, UnitClass(name))
+		if class then
+			self[name] = hexColors[class] .. name .. "|r"
+			return icon and fmt(iconString, icon, self[name]) or self[name]
+		end
+
+		return icon and fmt(iconString, icon, name) or name
 	end})
 
 	local mt = {__newindex = function(self, key, value)
