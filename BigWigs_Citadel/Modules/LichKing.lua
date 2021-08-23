@@ -35,16 +35,18 @@ mod.optionHeaders = {
 }
 
 local fmt = string.format
-local phase = 0
 local hugged = mod:NewTargetList()
 local class = select(2, UnitClass("player"))
 local frenzied = {}
 local plagueTicks = {}
 
+local warmup_trigger = "So the Light's vaunted justice has finally arrived"
+local engage_trigger = "I'll keep you alive to witness the end, Fordring."
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.warmup_trigger = "So the Light's vaunted justice has finally arrived"
-	L.engage_trigger = "I'll keep you alive to witness the end, Fordring."
+	L.warmup_trigger = warmup_trigger
+	L.engage_trigger = engage_trigger
 
 	L.horror_bar = "~Next Horror"
 	L.horror_message = "Shambling Horror"
@@ -123,8 +125,8 @@ function mod:OnBossEnable()
 	self:Death("Win", 36597)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Warmup", L["warmup_trigger"])
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Warmup", L["warmup_trigger"], warmup_trigger)
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 end
 
 function mod:Warmup()
@@ -132,6 +134,7 @@ function mod:Warmup()
 end
 
 function mod:OnEngage(diff)
+	self:SetPhase(1)
 	wipe(frenzied)
 	wipe(plagueTicks)
 
@@ -139,7 +142,6 @@ function mod:OnEngage(diff)
 	self:Bar(73912, L["necroticplague_bar"], 31.5, 73912)
 	self:Bar(70372, L["horror_bar"], 20, 70372)
 	self:Bar(70541, L["infest_bar"], 5, 70541)
-	phase = 1
 	if diff > 2 then
 		self:Bar(73529, L["trap_bar"], 15.5, 73539)
 	end
@@ -295,16 +297,17 @@ end
 do
 	local str = "\124TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d.blp:15:-5\124t %s"
 	local alreadyHugged = {}
+	local hugIcon = 2
 	local function ValkyrHugCheck()
-		for i = 1, GetNumRaidMembers() do
-			local n = GetRaidRosterInfo(i)
-			-- we add the player if not already hugged
-			if UnitInVehicle(n) and not alreadyHugged[n] then
-				hugged[#hugged + 1] = {n, #hugged + 2}
-				alreadyHugged[n] = true
-			-- clear if not hugged but found in the table
-			elseif not UnitInVehicle(n) and alreadyHugged[n] then
-				alreadyHugged[n] = nil
+		for unit in mod:GetGroupMembers() do
+			if UnitInVehicle(unit) and not alreadyHugged[unit] then
+				alreadyHugged[unit] = true
+				local raidIndex = UnitInRaid(unit)
+				local name, _, _, _, _, class = GetRaidRosterInfo(raidIndex + 1)
+				if name == UnitName(unit) then
+					hugged[hugged + 1] = {name, hugIcon, class}
+				end
+				hugIcon = hugIcon + 1
 			end
 		end
 		mod:TargetMessage(69037, L["valkyrhug_message"], hugged, "Urgent", 71844)
@@ -348,7 +351,7 @@ function mod:HSRemove(player, spellId)
 end
 
 function mod:RemorselessWinter(_, spellId)
-	phase = phase + 1
+	self:SetPhase(self.phase + 0.5, "runaway")
 	self:SendMessage("BigWigs_StopBar", self, L["necroticplague_bar"])
 	self:SendMessage("BigWigs_StopBar", self, L["horror_bar"])
 	self:SendMessage("BigWigs_StopBar", self, L["infest_bar"])
@@ -362,7 +365,7 @@ function mod:RemorselessWinter(_, spellId)
 end
 
 function mod:Quake(_, spellId)
-	phase = phase + 1
+	self:SetPhase(self.phase + 0.5)
 	self:SendMessage("BigWigs_StopBar", self, L["ragingspirit_bar"])
 	self:LocalMessage(72262, L["quake_message"], "Urgent", spellId, "Alert")
 	self:Voice(72762, -1, 27)
@@ -370,9 +373,9 @@ function mod:Quake(_, spellId)
 	self:Bar(72762, L["defile_bar"], 37, 72762)
 	self:Bar(70541, L["infest_bar"], 13, 70541)
 	self:Bar(69409, L["reaper_bar"], 34, 69409)
-	if phase == 3 then
+	if self.phase == 3 then
 		self:Bar(69037, L["valkyr_bar"], 24, 71844)
-	elseif phase == 5 then
+	elseif self.phase == 5 then
 		self:Bar(70498, L["vilespirits_bar"], 21, 70498)
 		self:Bar(68980, L["harvestsoul_bar"], 12, 68980)
 	end

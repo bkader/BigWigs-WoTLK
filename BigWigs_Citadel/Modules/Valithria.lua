@@ -24,9 +24,13 @@ mod.optionHeaders = {
 local blazingTimers = {60, 51.5, 53.5, 41, 41, 35, 33}
 local blazingCount, blazingRepeater, portalCount = 1, nil, 1
 
+-- fallback in case the server doesn't have the yell localized.
+local engage_trigger = "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon!"
+local portal_trigger = "I have opened a portal into the Dream. Your salvation lies within, heroes..."
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon!"
+	L.engage_trigger = engage_trigger
 
 	L.portal = "Nightmare Portals"
 	L.portal_desc = "Warns when Valithria opens portals."
@@ -34,7 +38,7 @@ if L then
 	L.portal_bar = "Portals inc"
 	L.portalcd_message = "Portals %d up in 14 sec!"
 	L.portalcd_bar = "Next Portals %d"
-	L.portal_trigger = "I have opened a portal into the Dream. Your salvation lies within, heroes..."
+	L.portal_trigger = portal_trigger
 
 	L.manavoid_message = "Mana Void on YOU!"
 
@@ -57,9 +61,9 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "LayWasteRemoved", 69325, 71730)
 	self:Log("SPELL_CAST_START", "Win", 71189)
 
-	self:Yell("Portal", L["portal_trigger"])
+	self:Yell("Portal", L["portal_trigger"], portal_trigger)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 end
 
 do
@@ -98,14 +102,13 @@ do
 		portalCount = 1
 		if diff > 2 then
 			self:Bar("suppresser", L["suppresser_message"], 14, 70588)
-			self:Bar("portal", L["portalcd_bar"]:format(portalCount), 46, 72482)
 			self:ScheduleTimer(suppresserSpawn, 14, 31)
 			self:Berserk(420)
 		else
 			self:Bar("suppresser", L["suppresser_message"], 29, 70588)
-			self:Bar("portal", L["portalcd_bar"]:format(portalCount), 46, 72482)
 			self:ScheduleTimer(suppresserSpawn, 29, 58)
 		end
+		self:Bar("portal", L["portalcd_bar"]:format(portalCount), 46, 72482)
 		self:ScheduleTimer(blazingSpawn, 50)
 		self:Bar("blazing", L["blazing"], 50, 71730)
 		self:DelayedMessage("blazing", 45, L["blazing_warning"], "Positive")

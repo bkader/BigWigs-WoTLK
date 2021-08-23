@@ -26,21 +26,23 @@ mod.optionHeaders = {
 	[69762] = "general"
 }
 
-local phase = 0
 local beaconTargets = mod:NewTargetList()
+local engage_trigger = "You are fools to have come to this place."
+local phase2_trigger = "Now, feel my master's limitless power and despair!"
+local airphase_trigger = "Your incursion ends here! None shall survive!"
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "You are fools to have come to this place."
+	L.engage_trigger = engage_trigger
 
 	L.phase2 = "Phase 2"
 	L.phase2_desc = "Warn when Sindragosa goes into phase 2, at 35%."
-	L.phase2_trigger = "Now, feel my master's limitless power and despair!"
+	L.phase2_trigger = phase2_trigger
 	L.phase2_message = "Phase 2!"
 
 	L.airphase = "Air phase"
 	L.airphase_desc = "Warn when Sindragosa will lift off."
-	L.airphase_trigger = "Your incursion ends here! None shall survive!"
+	L.airphase_trigger = airphase_trigger
 	L.airphase_message = "Air phase!"
 	L.airphase_bar = "Next air phase"
 
@@ -73,9 +75,9 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "Grip", 70117)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Warmup", L["engage_trigger"])
-	self:Yell("AirPhase", L["airphase_trigger"])
-	self:Yell("Phase2", L["phase2_trigger"])
+	self:Yell("Warmup", L["engage_trigger"], engage_trigger)
+	self:Yell("AirPhase", L["airphase_trigger"], airphase_trigger)
+	self:Yell("Phase2", L["phase2_trigger"], phase2_trigger)
 	self:Death("Win", 36853)
 end
 
@@ -85,7 +87,7 @@ function mod:Warmup()
 end
 
 function mod:OnEngage()
-	phase = 1
+	self:SetPhase(1)
 	self:Berserk(600)
 	self:Voice(70117, -1, 26)
 	self:Bar(69762, L["unchained_bar"], random(9, 14), 69762)
@@ -167,7 +169,7 @@ function mod:Grip()
 	self:Voice("runaway")
 	self:Message(71047, L["boom_message"], "Important", 71047, "Alarm")
 	self:Bar(71047, L["boom_bar"], 5, 71047)
-	if phase == 2 then
+	if self.phase == 2 then
 		self:Voice(70117, -1, 60)
 		self:Bar(71047, L["grip_bar"], 67, 70117)
 	end
@@ -181,7 +183,7 @@ function mod:AirPhase()
 end
 
 function mod:Phase2()
-	phase = 2
+	self:SetPhase(2)
 	self:Voice("phase2")
 	self:SendMessage("BigWigs_StopBar", self, L["airphase_bar"])
 	self:Message("phase2", L["phase2_message"], "Positive", nil, "Long")
@@ -196,7 +198,7 @@ function mod:Buffet(player, spellId, _, _, _, stack)
 end
 
 function mod:Instability(player, spellId, _, _, _, stack)
-	if stack >= 4 and UnitIsUnit(player, "player") and phase ~= 2 then
+	if stack >= 4 and UnitIsUnit(player, "player") and self.phase ~= 2 then
 		self:Voice(69766, true)
 		self:LocalMessage(69766, L["instability_message"]:format(stack), "Personal", spellId)
 	end
@@ -212,9 +214,9 @@ function mod:Chilled(player, spellId, _, _, _, stack)
 end
 
 function mod:Unchained(player, spellId)
-	if phase == 1 then
+	if self.phase == 1 then
 		self:Bar(69762, L["unchained_bar"], random(30, 35), spellId)
-	elseif phase == 2 then
+	elseif self.phase == 2 then
 		self:Bar(69762, L["unchained_bar"], 80, spellId)
 	end
 	if UnitIsUnit(player, "player") then

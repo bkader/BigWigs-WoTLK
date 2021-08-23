@@ -15,10 +15,11 @@ mod.optionHeaders = {
 
 local sporeTargets = mod:NewTargetList()
 local count = 0
+local engage_trigger = "Fun time?"
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "Fun time?"
+	L.engage_trigger = engage_trigger
 
 	L.inhale_message = "Inhale Blight %d"
 	L.inhale_bar = "Inhale %d"
@@ -46,7 +47,7 @@ function mod:OnBossEnable()
 	self:AddSyncListener("GooBall")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 
 	self:Log("SPELL_AURA_APPLIED", "Spores", 69279)
 end

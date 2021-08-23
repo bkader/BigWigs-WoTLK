@@ -17,10 +17,11 @@ mod.optionHeaders = {
 
 local handle_Adds = nil
 local dmTargets = mod:NewTargetList()
+local engage_trigger = "What is this disturbance?"
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "What is this disturbance?"
+	L.engage_trigger = engage_trigger
 	L.phase2_message = "Barrier DOWN - Phase 2!"
 
 	L.dnd_message = "Death and Decay on YOU!"
@@ -54,7 +55,7 @@ function mod:OnBossEnable()
 	self:Death("Win", 36855)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 end
 
 local function adds(seconds)
@@ -65,6 +66,7 @@ local function adds(seconds)
 end
 
 function mod:OnEngage(diff)
+	self:SetPhase(1)
 	self:Berserk(600)
 	self:Bar("adds", L["adds_bar"], 7, 70768)
 	self:Bar(71001, L["dnd_bar"], 12, 71001)
@@ -85,12 +87,12 @@ function mod:DnD(player, spellId)
 end
 
 function mod:Barrier(_, spellId)
+	self:SetPhase(2)
 	if self:GetInstanceDifficulty() < 3 then
 		self:CancelTimer(handle_Adds, true)
 		self:SendMessage("BigWigs_StopBar", self, L["adds_bar"])
 		self:CancelDelayedMessage(L["adds_warning"])
 	end
-	self:Voice("phase2")
 	self:Message(70842, L["phase2_message"], "Positive", spellId, "Info")
 	self:Bar(71426, L["spirit_bar"], 30, 71426)
 end

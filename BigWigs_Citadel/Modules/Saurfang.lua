@@ -23,6 +23,11 @@ local bbTargets = mod:NewTargetList()
 local killed = nil
 local count = 1
 
+-- fallback just in case the server doesn't have localizations
+local engage_trigger = "BY THE MIGHT OF THE LICH KING!"
+local warmup_alliance = "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
+local warmup_horde = "Kor'kron, move out! Champions, watch your backs. The Scourge have been..."
+
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.adds = "Blood Beasts"
@@ -37,9 +42,9 @@ if L then
 
 	L.mark = "Mark %d"
 
-	L.engage_trigger = "BY THE MIGHT OF THE LICH KING!"
-	L.warmup_alliance = "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
-	L.warmup_horde = "Kor'kron, move out! Champions, watch your backs. The Scourge have been..."
+	L.engage_trigger = engage_trigger
+	L.warmup_alliance = warmup_alliance
+	L.warmup_horde = warmup_horde
 end
 L = mod:GetLocale()
 
@@ -53,8 +58,8 @@ function mod:OnBossEnable()
 	self:Death("Deaths", 37813)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
-	self:Yell("Warmup", L["warmup_alliance"], L["warmup_horde"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
+	self:Yell("Warmup", L["warmup_alliance"], L["warmup_horde"], warmup_alliance, warmup_horde)
 end
 
 function mod:OnEngage(diff)

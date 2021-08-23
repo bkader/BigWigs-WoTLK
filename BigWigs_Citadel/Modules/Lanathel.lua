@@ -23,10 +23,11 @@ local airPhaseTimers = {
 	{124, 120}, -- 10man Heroic
 	{127, 100} -- 25man Heroic
 }
+local engage_trigger = "You have made an... unwise... decision."
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "You have made an... unwise... decision."
+	L.engage_trigger = engage_trigger
 
 	L.shadow = "Shadows"
 	L.shadow_message = "Shadows"
@@ -50,7 +51,7 @@ function mod:OnBossEnable()
 	-- 71623. 72264 are 10 man (and so on)
 	self:Log("SPELL_AURA_APPLIED", "Slash", 71623, 71624, 71625, 71626, 72264, 72265, 72266, 72267)
 
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 	self:Emote("Shadows", L["shadow"])
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")

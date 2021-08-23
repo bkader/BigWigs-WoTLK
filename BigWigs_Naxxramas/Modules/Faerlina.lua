@@ -19,12 +19,17 @@ local frenzied = nil
 -- Localization
 --
 
+local starttrigger1 = "Kneel before me, worm!"
+local starttrigger2 = "Slay them in the master's name!"
+local starttrigger3 = "You cannot hide from me!"
+local starttrigger4 = "Run while you still can!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.starttrigger1 = "Kneel before me, worm!"
-	L.starttrigger2 = "Slay them in the master's name!"
-	L.starttrigger3 = "You cannot hide from me!"
-	L.starttrigger4 = "Run while you still can!"
+	L.starttrigger1 = starttrigger1
+	L.starttrigger2 = starttrigger2
+	L.starttrigger3 = starttrigger3
+	L.starttrigger4 = starttrigger4
 
 	L.startwarn = "Faerlina engaged, 60 sec to frenzy!"
 
@@ -53,7 +58,7 @@ function mod:OnBossEnable()
 
 	started = nil
 
-	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"], L["starttrigger4"])
+	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"], L["starttrigger4"], starttrigger1, starttrigger2, starttrigger3, starttrigger4)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 end
 

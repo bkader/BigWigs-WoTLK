@@ -2,7 +2,7 @@
 -- Prototype
 --
 
-local debug = nil -- Set to true to get (very spammy) debug messages.
+local debug = true -- Set to true to get (very spammy) debug messages.
 local dbgStr = "[DBG:%s] %s"
 local function dbg(self, msg)
 	print(dbgStr:format(self.displayName, msg))
@@ -204,7 +204,7 @@ do
 end
 
 -------------------------------------------------------------------------------
--- Engage / wipe checking + unit scanning
+-- Engage / phase / wipe checking + unit scanning
 --
 
 do
@@ -369,6 +369,19 @@ do
 		self:SendMessage("BigWigs_OnBossWin", self)
 		self:Sync("Death", self.moduleName)
 	end
+
+	function boss:SetPhase(phase, voice)
+		if (phase or 0) == 0 then
+			self.phase = (self.phase or 0) + 1
+		else
+			self.phase = phase
+		end
+		if debug then
+			dbg(self, ":SetPhase " .. (self.phase or 1))
+		end
+		self:Voice(voice or ("phase" .. self.phase))
+		self:SendMessage("BigWigs_SetStage", self, self.phase)
+	end
 end
 
 -------------------------------------------------------------------------------
@@ -492,14 +505,14 @@ do
 			return nil
 		end
 
-		local name, icon
+		local name, icon, class
 		if type(key) == "table" then
-			name, icon = key[1], key[2]
+			name, icon, class = key[1], key[2], key[3]
 		else
-			name, icon = key, nil
+			name, icon, class = key, nil, nil
 		end
 
-		local class = select(2, UnitClass(name))
+		class = class or select(2, UnitClass(name))
 		if class then
 			self[name] = hexColors[class] .. name .. "|r"
 			return icon and fmt(iconString, icon, self[name]) or self[name]
@@ -600,10 +613,8 @@ function boss:Voice(key, onYou, delay)
 		filepath = fmt([[Interface\AddOns\BigWigs\Media\Voices\%s.mp3]], tostring(key))
 	end
 
-	if delay and delay > 0 then
-		self:ScheduleTimer(function()
-			self:SendMessage("BigWigs_Voice", self, filepath)
-		end, delay)
+	if (delay or 0) > 0 then
+		self:ScheduleTimer("SendMessage", delay, self, "BigWigs_Voice", self, filepath)
 	else
 		self:SendMessage("BigWigs_Voice", self, filepath)
 	end
@@ -694,6 +705,47 @@ end
 -------------------------------------------------------------------------------
 -- Extra functions
 --
+
+do
+	local function raidIterator(groupMembers, uId)
+		local a, b = uId:byte(-2, -1)
+		local i = (a >= 0x30 and a <= 0x39 and (a - 0x30) * 10 or 0) + b - 0x30
+		if i < groupMembers then
+			return "raid" .. i + 1, i + 1
+		end
+	end
+
+	local function partyIterator(groupMembers, uId)
+		if not uId then
+			return "player", 0
+		elseif uId == "player" then
+			if groupMembers > 0 then
+				return "party1", 1
+			end
+		else
+			local i = uId:byte(-1) - 0x30
+			if i < groupMembers then
+				return "party" .. i + 1, i + 1
+			end
+		end
+	end
+
+	local function soloIterator(_, state)
+		if not state then -- no state == first call
+			return "player", 0
+		end
+	end
+
+	function boss:GetGroupMembers()
+		if GetNumRaidMembers() > 0 then
+			return raidIterator, GetNumRaidMembers(), "raid0"
+		elseif GetNumPartyMembers() then
+			return partyIterator, GetNumPartyMembers(), nil
+		else
+			return soloIterator, nil, nil
+		end
+	end
+end
 
 function boss:GroupInfo()
 	local prefix, min, max = "raid", 1, GetNumRaidMembers()

@@ -50,17 +50,21 @@ do
 	-- Localization
 	--
 
+	local enable_trigger = "You have heard the call of the Argent Crusade and you have boldly answered"
+	local wipe_trigger = "Tragic..."
+	local engage_trigger = "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!"
+	local jormungars_trigger = "Steel yourselves, heroes, for the twin terrors, Acidmaw and Dreadscale, enter the arena!"
+	local icehowl_trigger = "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
+	local charge_trigger = "glares at"
+
 	local L = mod:NewLocale("enUS", true)
 	if L then
-		L.enable_trigger = "You have heard the call of the Argent Crusade and you have boldly answered"
-		L.wipe_trigger = "Tragic..."
+		L.enable_trigger = enable_trigger
+		L.wipe_trigger = wipe_trigger
 
-		L.engage_trigger =
-			"Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!"
-		L.jormungars_trigger =
-			"Steel yourselves, heroes, for the twin terrors, Acidmaw and Dreadscale, enter the arena!"
-		L.icehowl_trigger =
-			"The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
+		L.engage_trigger = engage_trigger
+		L.jormungars_trigger = jormungars_trigger
+		L.icehowl_trigger = icehowl_trigger
 		L.boss_incoming = "%s incoming"
 
 		-- Gormok
@@ -86,7 +90,7 @@ do
 		L.butt_bar = "~Butt Cooldown"
 		L.charge = "Furious Charge"
 		L.charge_desc = "Warn about Furious Charge on players."
-		L.charge_trigger = "glares at"
+		L.charge_trigger = charge_trigger
 		L.charge_say = "Charge on me!"
 
 		L.bosses = "Bosses"
@@ -103,7 +107,7 @@ do
 			35144, -- Acidmaw
 			34797 -- Icehowl
 		)
-		self:RegisterEnableYell(L["enable_trigger"])
+		self:RegisterEnableYell(L["enable_trigger"], enable_trigger)
 
 		icehowl = BigWigs:Translate("Icehowl")
 		jormungars = BigWigs:Translate("Jormungars")
@@ -128,23 +132,24 @@ do
 		self:Log("SPELL_AURA_APPLIED", "Toxin", 67618, 67619, 67620, 66823)
 		self:Log("SPELL_AURA_APPLIED", "Burn", 66869, 66870)
 		self:Log("SPELL_AURA_APPLIED", "Enraged", 68335)
-		self:Yell("Jormungars", L["jormungars_trigger"])
+		self:Yell("Jormungars", L["jormungars_trigger"], jormungars_trigger)
 
 		-- Icehowl
 		self:Log("SPELL_AURA_APPLIED", "Rage", 66759, 67658, 67657, 67659)
 		self:Log("SPELL_AURA_APPLIED", "Daze", 66758)
 		self:Log("SPELL_AURA_APPLIED", "Butt", 67654, 67655, 66770)
-		self:Yell("Icehowl", L["icehowl_trigger"])
-		self:Emote("Charge", L["charge_trigger"])
+		self:Yell("Icehowl", L["icehowl_trigger"], icehowl_trigger)
+		self:Emote("Charge", L["charge_trigger"], charge_trigger)
 
 		-- Common
-		self:Yell("Engage", L["engage_trigger"])
-		self:Yell("Reboot", L["wipe_trigger"])
+		self:Yell("Engage", L["engage_trigger"], engage_trigger)
+		self:Yell("Reboot", L["wipe_trigger"], wipe_trigger)
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Reboot")
 		self:Death("Win", 34797)
 	end
 
 	function mod:OnEngage(diff)
+		self:SetPhase(1)
 		difficulty = diff
 		self:CloseProximity()
 		self:Bar("bosses", L["boss_incoming"]:format(gormok), 20, 67477)
@@ -157,6 +162,7 @@ do
 	end
 
 	function mod:Jormungars()
+		self:SetPhase(2)
 		local m = L["boss_incoming"]:format(jormungars)
 		self:Message("bosses", m, "Positive")
 		self:Bar("bosses", m, 15, "INV_Misc_MonsterScales_18")
@@ -170,6 +176,7 @@ do
 	end
 
 	function mod:Icehowl()
+		self:SetPhase(3)
 		local m = L["boss_incoming"]:format(icehowl)
 		self:Message("bosses", m, "Positive")
 		self:Bar("bosses", m, 10, "INV_Misc_MonsterHorn_07")
@@ -375,13 +382,17 @@ do
 
 	-- Localization
 
+	local enable_trigger = "Trifling gnome! Your arrogance will be your undoing!"
+	local engage_trigger = "You face Jaraxxus, Eredar Lord of the Burning Legion!"
+	local engage_trigger1 = "But I'm in charge here"
+
 	local L = mod:NewLocale("enUS", true)
 	if L then
-		L.enable_trigger = "Trifling gnome! Your arrogance will be your undoing!"
+		L.enable_trigger = enable_trigger
 
 		L.engage = "Engage"
-		L.engage_trigger = "You face Jaraxxus, Eredar Lord of the Burning Legion!"
-		L.engage_trigger1 = "But I'm in charge here"
+		L.engage_trigger = engage_trigger
+		L.engage_trigger1 = engage_trigger1
 
 		L.adds = "Portals and volcanos"
 		L.adds_desc = "Show a timer and warn for when Jaraxxus summons portals and volcanos."
@@ -408,7 +419,7 @@ do
 
 	function mod:OnRegister()
 		self:RegisterEnableMob(34780)
-		self:RegisterEnableYell(L["enable_trigger"])
+		self:RegisterEnableYell(L["enable_trigger"], enable_trigger)
 	end
 
 	function mod:OnBossEnable()
@@ -423,8 +434,8 @@ do
 		self:Log("SPELL_INTERRUPT", "MistressKissInterrupted", 66335, 66359, 67073, 67074, 67075, 67908, 67909, 67910) -- debuff after getting interrupted
 
 		-- Only happens the first time we engage Jaraxxus, still 11 seconds left until he really engages.
-		self:Yell("FirstEngage", L["engage_trigger1"])
-		self:Yell("Engage", L["engage_trigger"])
+		self:Yell("FirstEngage", L["engage_trigger1"], engage_trigger1)
+		self:Yell("Engage", L["engage_trigger"], engage_trigger)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 		self:Death("Win", 34780)
 	end
@@ -529,11 +540,12 @@ do
 	}
 
 	-- Localization
+	local enable_trigger = "The next battle will be against the Argent Crusade's most powerful knights! Only by defeating them will you be deemed worthy..."
+	local defeat_trigger = "A shallow and tragic victory."
 
 	local L = mod:NewLocale("enUS", true)
 	if L then
-		L.enable_trigger =
-			"The next battle will be against the Argent Crusade's most powerful knights! Only by defeating them will you be deemed worthy..."
+		L.enable_trigger = "The next battle will be against the Argent Crusade's most powerful knights! Only by defeating them will you be deemed worthy..."
 		L.defeat_trigger = "A shallow and tragic victory."
 
 		L["Shield on %s!"] = true
@@ -550,37 +562,11 @@ do
 	function mod:OnRegister()
 		self:RegisterEnableMob(
 			-- Alliance NPCs
-			34460,
-			34461,
-			34463,
-			34465,
-			34466,
-			34467,
-			34468,
-			34469,
-			34470,
-			34471,
-			34472,
-			34473,
-			34474,
-			34475,
+			34460, 34461, 34463, 34465, 34466, 34467, 34468, 34469, 34470, 34471, 34472, 34473, 34474, 34475,
 			-- Horde NPCs
-			34441,
-			34444,
-			34445,
-			34447,
-			34448,
-			34449,
-			34450,
-			34451,
-			34453,
-			34454,
-			34455,
-			34456,
-			34458,
-			34459
+			34441, 34444, 34445, 34447, 34448, 34449, 34450, 34451, 34453, 34454, 34455, 34456, 34458, 34459
 		)
-		self:RegisterEnableYell(L["enable_trigger"])
+		self:RegisterEnableYell(L["enable_trigger"], enable_trigger)
 	end
 
 	function mod:OnBossEnable()
@@ -597,7 +583,7 @@ do
 		self:Log("SPELL_AURA_REMOVED", "HellfireStopped", 65816, 68145, 68146, 68147)
 		self:Log("SPELL_DAMAGE", "HellfireOnYou", 65817, 68142, 68143, 68144)
 
-		self:Yell("Win", L["defeat_trigger"])
+		self:Yell("Win", L["defeat_trigger"], defeat_trigger)
 	end
 
 	--------------------------------------------------------------------------------
@@ -701,9 +687,11 @@ do
 
 	-- Localization
 
+	local engage_trigger1 = "In the name of our dark master. For the Lich King. You. Will. Die."
+
 	local L = mod:NewLocale("enUS", true)
 	if L then
-		L.engage_trigger1 = "In the name of our dark master. For the Lich King. You. Will. Die."
+		L.engage_trigger1 = engage_trigger1
 
 		L.vortex_or_shield_cd = "Next Vortex or Shield"
 		L.next = "Next Vortex or Shield"
@@ -734,7 +722,7 @@ do
 		-- First 3 are dark, last 3 are light.
 		self:Log("SPELL_AURA_APPLIED", "Touch", 67281, 67282, 67283, 67296, 67297, 67298)
 
-		self:Yell("Engage", L["engage_trigger1"])
+		self:Yell("Engage", L["engage_trigger1"], engage_trigger1)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 		self:Death("Win", 34496)
 
@@ -898,21 +886,23 @@ do
 	local ssName = GetSpellInfo(66134)
 	local difficulty = 0
 	local coldTargets = mod:NewTargetList()
-	local phase2 = nil
 
 	-- ADDED BY KADER
 	local max = nil
 	local current = 0
 
 	-- Localization
+	local engage_trigger = "This place will serve as your tomb!"
+	local unburrow_trigger = "emerges from the ground"
+	local burrow_trigger = "burrows into the ground"
 
 	local L = mod:NewLocale("enUS", true)
 	if L then
 		L.engage_message = "Anub'arak engaged, burrow in 80sec!"
-		L.engage_trigger = "This place will serve as your tomb!"
+		L.engage_trigger = engage_trigger
 
-		L.unburrow_trigger = "emerges from the ground"
-		L.burrow_trigger = "burrows into the ground"
+		L.unburrow_trigger = unburrow_trigger
+		L.burrow_trigger = burrow_trigger
 		L.burrow = "Burrow"
 		L.burrow_desc = "Shows timers for emerges and submerges, and also add spawn timers."
 		L.burrow_cooldown = "Next Burrow"
@@ -968,10 +958,10 @@ do
 		self:Log("SPELL_CAST_SUCCESS", "FreezeCooldown", 66012)
 		self:Log("SPELL_MISSED", "FreezeCooldown", 66012)
 
-		self:Emote("Burrow", L["burrow_trigger"])
-		self:Emote("Surface", L["unburrow_trigger"])
+		self:Emote("Burrow", L["burrow_trigger"], burrow_trigger)
+		self:Emote("Surface", L["unburrow_trigger"], unburrow_trigger)
 
-		self:Yell("Engage", L["engage_trigger"])
+		self:Yell("Engage", L["engage_trigger"], engage_trigger)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 		self:Death("Win", 34564)
 		self:Death("Disable", 34564) -- ADDED BY KADER
@@ -987,6 +977,8 @@ do
 	end
 
 	function mod:OnEngage(diff)
+		self:SetPhase(1)
+
 		isBurrowed = nil
 		difficulty = diff
 		self:Message("burrow", L["engage_message"], "Attention", 65919)
@@ -1001,7 +993,6 @@ do
 		end
 
 		self:Berserk(570, true)
-		phase2 = nil
 	end
 
 	-- Event Handlers
@@ -1017,7 +1008,7 @@ do
 			scheduled = nil
 		end
 		function mod:ColdDebuff(player, spellId, _, _, spellName)
-			if not phase2 then
+			if not self.phase ~= 2 then
 				return
 			end
 			coldTargets[#coldTargets + 1] = player
@@ -1032,7 +1023,7 @@ do
 	end
 
 	function mod:ColdDebuff(player, spellId, _, _, spellName)
-		if not UnitIsUnit(player, "player") or not phase2 then
+		if not UnitIsUnit(player, "player") or not self.phase ~= 2 then
 			return
 		end
 		self:LocalMessage(68510, spellName, "Personal", spellId)
@@ -1040,15 +1031,15 @@ do
 	end
 
 	function mod:ColdCooldown(_, spellId)
-		if not phase2 then
+		if not self.phase ~= 2 then
 			return
 		end
 		self:Bar(68510, L["pcold_bar"], 15, spellId)
 	end
 
 	function mod:Swarm(player, spellId, _, _, spellName)
+		self:SetPhase(2)
 		self:Message(66118, spellName, "Important", spellId, "Long")
-		phase2 = true
 		self:SendMessage("BigWigs_StopBar", self, L["burrow_cooldown"])
 		self:CancelDelayedMessage(L["burrow_soon"])
 		if difficulty < 3 then -- Normal modes

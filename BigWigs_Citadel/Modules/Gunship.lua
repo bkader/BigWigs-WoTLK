@@ -10,12 +10,19 @@ mod.toggleOptions = {"adds", "mage", "bosskill"}
 
 local killed = nil
 
+local adds_trigger_alliance = "Reavers, Sergeants, attack!"
+local adds_trigger_horde = "Marines, Sergeants, attack!"
+local warmup_trigger_alliance = "Fire up the engines"
+local warmup_trigger_horde = "Rise up, sons and daughters"
+local disable_trigger_alliance = "Onward, brothers and sisters"
+local disable_trigger_horde = "Onward to the Lich King"
+
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.adds = "Portals"
 	L.adds_desc = "Warn for Portals."
-	L.adds_trigger_alliance = "Reavers, Sergeants, attack!"
-	L.adds_trigger_horde = "Marines, Sergeants, attack!"
+	L.adds_trigger_alliance = adds_trigger_alliance
+	L.adds_trigger_horde = adds_trigger_horde
 	L.adds_message = "Portals!"
 	L.adds_bar = "Next Portals"
 
@@ -24,18 +31,18 @@ if L then
 	L.mage_message = "Mage Spawned!"
 	L.mage_bar = "Next Mage"
 
-	L.warmup_trigger_alliance = "Fire up the engines"
-	L.warmup_trigger_horde = "Rise up, sons and daughters"
+	L.warmup_trigger_alliance = warmup_trigger_alliance
+	L.warmup_trigger_horde = warmup_trigger_horde
 
-	L.disable_trigger_alliance = "Onward, brothers and sisters"
-	L.disable_trigger_horde = "Onward to the Lich King"
+	L.disable_trigger_alliance = disable_trigger_alliance
+	L.disable_trigger_horde = disable_trigger_horde
 end
 L = mod:GetLocale()
 
 function mod:OnBossEnable()
-	self:Yell("Warmup", L["warmup_trigger_alliance"], L["warmup_trigger_horde"])
-	self:Yell("AddsPortal", L["adds_trigger_alliance"], L["adds_trigger_horde"]) --XXX unreliable, change to repeater
-	self:Yell("Defeated", L["disable_trigger_alliance"], L["disable_trigger_horde"])
+	self:Yell("Warmup", L["warmup_trigger_alliance"], L["warmup_trigger_horde"], warmup_trigger_alliance, warmup_trigger_horde)
+	self:Yell("AddsPortal", L["adds_trigger_alliance"], L["adds_trigger_horde"], adds_trigger_alliance, adds_trigger_horde) --XXX unreliable, change to repeater
+	self:Yell("Defeated", L["disable_trigger_alliance"], L["disable_trigger_horde"], disable_trigger_alliance, disable_trigger_horde)
 	self:Log("SPELL_CAST_START", "Frozen", 69705)
 	self:Log("SPELL_AURA_REMOVED", "FrozenCD", 69705)
 	self:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")

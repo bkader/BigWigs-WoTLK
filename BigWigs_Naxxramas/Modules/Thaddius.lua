@@ -21,6 +21,12 @@ local throwHandle = nil
 --------------------------------------------------------------------------------
 -- Localization
 --
+local trigger_phase1_1 = "Stalagg crush you!"
+local trigger_phase1_2 = "Feed you to master!"
+local trigger_phase2_1 = "Eat... your... bones..."
+local trigger_phase2_2 = "Break... you!!"
+local trigger_phase2_3 = "Kill..."
+local polarity_trigger = "Now you feel pain..."
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -30,13 +36,13 @@ if L then
 	L.throw = "Throw"
 	L.throw_desc = "Warn about tank platform swaps."
 
-	L.trigger_phase1_1 = "Stalagg crush you!"
-	L.trigger_phase1_2 = "Feed you to master!"
-	L.trigger_phase2_1 = "Eat... your... bones..."
-	L.trigger_phase2_2 = "Break... you!!"
-	L.trigger_phase2_3 = "Kill..."
+	L.trigger_phase1_1 = trigger_phase1_1
+	L.trigger_phase1_2 = trigger_phase1_2
+	L.trigger_phase2_1 = trigger_phase2_1
+	L.trigger_phase2_2 = trigger_phase2_2
+	L.trigger_phase2_3 = trigger_phase2_3
 
-	L.polarity_trigger = "Now you feel pain..."
+	L.polarity_trigger = polarity_trigger
 	L.polarity_message = "Polarity Shift incoming!"
 	L.polarity_warning = "3 sec to Polarity Shift!"
 	L.polarity_bar = "Polarity Shift"
@@ -136,10 +142,14 @@ local function throw()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(event, msg)
-	if msg:find(L["polarity_trigger"]) then
+	if msg:find(L["polarity_trigger"]) or msg:find(polarity_trigger) then
 		self:DelayedMessage(28089, 25, L["polarity_warning"], "Important")
 		self:Bar(28089, L["polarity_bar"], 28, "Spell_Nature_Lightning")
-	elseif msg == L["trigger_phase1_1"] or msg == L["trigger_phase1_2"] then
+	elseif
+		msg == L["trigger_phase1_1"] or msg == trigger_phase1_1 or
+		msg == L["trigger_phase1_2"] or msg == trigger_phase1_2 then
+		self:SetPhase(1)
+
 		if not stage1warn then
 			self:Message("phase", L["phase1_message"], "Important")
 		end
@@ -147,7 +157,12 @@ function mod:CHAT_MSG_MONSTER_YELL(event, msg)
 		stage1warn = true
 		throw()
 		self:Engage()
-	elseif msg:find(L["trigger_phase2_1"]) or msg:find(L["trigger_phase2_2"]) or msg:find(L["trigger_phase2_3"]) then
+	elseif
+		msg:find(L["trigger_phase2_1"]) or msg:find(trigger_phase2_1) or
+		msg:find(L["trigger_phase2_2"]) or msg:find(trigger_phase2_2) or
+		msg:find(L["trigger_phase2_3"]) or msg:find(trigger_phase2_3) then
+		self:SetPhase(2)
+
 		self:CancelTimer(throwHandle, true)
 		self:SendMessage("BigWigs_StopBar", self, L["throw_bar"])
 		self:Message("phase", L["phase2_message"], "Important")

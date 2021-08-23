@@ -9,13 +9,16 @@ mod.otherMenu = "Northrend"
 mod:RegisterEnableMob(39747)
 mod.toggleOptions = {"airphase", 78722, 74403, 74453, "bosskill"}
 
+local engage_trigger = "You will sssuffer for this intrusion!"
+local airphase_trigger = "Burn in the master's flame!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "You will sssuffer for this intrusion!"
+	L.engage_trigger = engage_trigger
 
 	L.airphase = "Air phase"
 	L.airphase_desc = "Warn when Saviana Ragefire will lift off."
-	L.airphase_trigger = "Burn in the master's flame!"
+	L.airphase_trigger = airphase_trigger
 	L.airphase_bar = "Next Air Phase"
 end
 L = mod:GetLocale()
@@ -33,8 +36,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "SafeBeacon", 74453)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L.engage_trigger)
-	self:Yell("AirPhase", L.airphase_trigger)
+	self:Yell("Engage", L.engage_trigger, engage_trigger)
+	self:Yell("AirPhase", L.airphase_trigger, airphase_trigger)
 end
 
 function mod:OnEngage()

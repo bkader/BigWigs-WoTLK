@@ -21,16 +21,22 @@ local wave2time = 41
 -- Localization
 --
 
+local starttrigger1 = "Die, trespasser!"
+local starttrigger2 = "Glory to the master!"
+local starttrigger3 = "Your life is forfeit!"
+local blinktrigger = "%s blinks away!"
+local addtrigger = "Rise, my soldiers! Rise and fight once more!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.starttrigger1 = "Die, trespasser!"
-	L.starttrigger2 = "Glory to the master!"
-	L.starttrigger3 = "Your life is forfeit!"
+	L.starttrigger1 = starttrigger1
+	L.starttrigger2 = starttrigger2
+	L.starttrigger3 = starttrigger3
 	L.startwarn = "Noth the Plaguebringer engaged! 90 sec till teleport"
 
 	L.blink = "Blink"
 	L.blink_desc = "Warnings when Noth blinks."
-	L.blinktrigger = "%s blinks away!"
+	L.blinktrigger = blinktrigger
 	L.blinkwarn = "Blink!"
 	L.blinkwarn2 = "Blink in ~5 sec!"
 	L.blinkbar = "Blink"
@@ -51,7 +57,7 @@ if L then
 
 	L.wave = "Waves"
 	L.wave_desc = "Alerts for the different waves."
-	L.addtrigger = "Rise, my soldiers! Rise and fight once more!"
+	L.addtrigger = addtrigger
 	L.wave1bar = "Wave 1"
 	L.wave2bar = "Wave 2"
 	L.wave2_message = "Wave 2 in 10 sec"
@@ -65,8 +71,8 @@ L = mod:GetLocale()
 function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "Curse", 29213, 54835)
 
-	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"])
-	self:Emote("Blink", L["blinktrigger"])
+	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"], starttrigger1, starttrigger2, starttrigger3)
+	self:Emote("Blink", L["blinktrigger"], blinktrigger)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 	self:Death("Win", 15954)
@@ -140,4 +146,3 @@ function mod:TeleportToRoom()
 	self:DelayedMessage("teleport", timeroom - 10, L["teleportwarn2"], "Urgent")
 	self:ScheduleTimer("TeleportToBalcony", timeroom)
 end
-

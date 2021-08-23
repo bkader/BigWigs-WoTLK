@@ -22,10 +22,11 @@ mod.optionHeaders = {
 }
 
 local gasTargets = mod:NewTargetList()
+local engage_trigger = "WEEEEEE!"
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "WEEEEEE!"
+	L.engage_trigger = engage_trigger
 
 	L.infection_bar = "Infection on %s!"
 	L.infection_message = "Infection"
@@ -48,7 +49,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Ooze", 69558)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 
 	self:Death("Win", 36627)
 end
@@ -56,7 +57,7 @@ end
 function mod:OnEngage(diff)
 	self:Berserk(600, true)
 	self:Bar(69508, L["spray_bar"], 20, 69508)
-	self:Bar(69674, L["infection_bar"], 14, 69674)
+	self:Bar(69674, L["infection_message"], 14, 69674)
 	if diff > 2 then
 		self:Bar(72272, L.vile_bar, random(23, 26), 72272)
 	end

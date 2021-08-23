@@ -18,23 +18,30 @@ local mcTargets = mod:NewTargetList()
 -- Localization
 --
 
+local start_trigger = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!"
+local phase2_trigger1 = "Pray for mercy!"
+local phase2_trigger2 = "Scream your dying breath!"
+local phase2_trigger3 = "The end is upon you!"
+local phase3_trigger = "Master, I require aid!"
+local guardians_trigger = "Very well. Warriors of the frozen wastes, rise up! I command you to fight, kill and die for your master! Let none survive!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.KELTHUZADCHAMBERLOCALIZEDLOLHAX = "Kel'Thuzad's Chamber"
 
-	L.start_trigger = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!"
+	L.start_trigger = start_trigger
 	L.start_warning = "Kel'Thuzad encounter started! ~3min 30sec till he is active!"
 	L.start_bar = "Phase 2"
 
 	L.phase = "Phase"
 	L.phase_desc = "Warn for phases."
-	L.phase2_trigger1 = "Pray for mercy!"
-	L.phase2_trigger2 = "Scream your dying breath!"
-	L.phase2_trigger3 = "The end is upon you!"
+	L.phase2_trigger1 = phase2_trigger1
+	L.phase2_trigger2 = phase2_trigger2
+	L.phase2_trigger3 = phase2_trigger3
 	L.phase2_warning = "Phase 2, Kel'Thuzad incoming!"
 	L.phase2_bar = "Kel'Thuzad Active!"
 	L.phase3_soon_warning = "Phase 3 soon!"
-	L.phase3_trigger = "Master, I require aid!"
+	L.phase3_trigger = phase3_trigger
 	L.phase3_warning = "Phase 3, Guardians in ~15 sec!"
 
 	L.mc_message = "Mind Control: %s"
@@ -50,7 +57,7 @@ if L then
 
 	L.guardians = "Guardian Spawns"
 	L.guardians_desc = "Warn for incoming Icecrown Guardians in phase 3."
-	L.guardians_trigger = "Very well. Warriors of the frozen wastes, rise up! I command you to fight, kill and die for your master! Let none survive!"
+	L.guardians_trigger = guardians_trigger
 	L.guardians_warning = "Guardians incoming in ~10sec!"
 	L.guardians_bar = "Guardians incoming!"
 end
@@ -153,23 +160,29 @@ function mod:UNIT_HEALTH(event, msg)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(event, msg)
-	if msg == L["start_trigger"] then
+	if msg == L["start_trigger"] or msg == start_trigger then
+		self:SetPhase(1)
 		self:Message("phase", L["start_warning"], "Attention")
 		self:Bar("phase", L["start_bar"], 215, "Spell_Fire_FelImmolation")
 		wipe(mcTargets)
 		wipe(fbTargets)
 		self:CloseProximity()
 		self:Engage()
-	elseif msg == L["phase2_trigger1"] or msg == L["phase2_trigger2"] or msg == L["phase2_trigger3"] then
+	elseif
+		msg == L["phase2_trigger1"] or msg == phase2_trigger1 or
+		msg == L["phase2_trigger2"] or msg == phase2_trigger2 or
+		msg == L["phase2_trigger3"] or msg == phase2_trigger3 then
+
+		self:SetPhase(2)
 		self:SendMessage("BigWigs_StopBar", self, L["start_bar"])
 		self:Message("phase", L["phase2_warning"], "Important")
 		self:Bar("phase", L["phase2_bar"], 15, "Spell_Shadow_Charm")
 		self:OpenProximity(10)
-	elseif msg == L["phase3_trigger"] then
+	elseif msg == L["phase3_trigger"] or msg == phase3_trigger then
+		self:SetPhase(3)
 		self:Message("phase", L["phase3_warning"], "Attention")
-	elseif msg == L["guardians_trigger"] then
+	elseif msg == L["guardians_trigger"] or msg == guardians_trigger then
 		self:Message("guardians", L["guardians_warning"], "Important")
 		self:Bar("guardians", L["guardians_bar"], 10, 28866)
 	end
 end
-

@@ -17,12 +17,15 @@ local started = nil
 --------------------------------------------------------------------------------
 -- Localization
 --
+local starttrigger1 = "Just a little taste..."
+local starttrigger2 = "Yes, run! It makes the blood pump faster!"
+local starttrigger3 = "There is no way out."
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.starttrigger1 = "Just a little taste..."
-	L.starttrigger2 = "Yes, run! It makes the blood pump faster!"
-	L.starttrigger3 = "There is no way out."
+	L.starttrigger1 = starttrigger1
+	L.starttrigger2 = starttrigger2
+	L.starttrigger3 = starttrigger3
 	L.engagewarn = "Anub'Rekhan engaged! Locust Swarm in ~%d sec"
 
 	L.gainendwarn = "Locust Swarm ended!"
@@ -44,7 +47,7 @@ function mod:OnBossEnable()
 	self:Death("Win", 15956)
 
 	started = nil
-	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"])
+	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], L["starttrigger3"], starttrigger1, starttrigger2, starttrigger3)
 end
 
 function mod:OnEngage(diff)
@@ -73,4 +76,3 @@ function mod:Swarm(_, spellId)
 	self:Message(28785, L["castwarn"], "Attention", spellId)
 	self:Bar(28785, L["castwarn"], 3, spellId)
 end
-

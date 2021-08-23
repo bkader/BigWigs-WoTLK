@@ -8,10 +8,11 @@ if not mod then return end
 mod.otherMenu = "Northrend"
 mod:RegisterEnableMob(39746)
 mod.toggleOptions = {74384, 74367, "bosskill"}
+local engage_trigger = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!"
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!"
+	L.engage_trigger = engage_trigger
 end
 L = mod:GetLocale()
 
@@ -24,7 +25,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Sunder", 74367)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L.engage_trigger)
+	self:Yell("Engage", L.engage_trigger, engage_trigger)
 end
 
 function mod:OnEngage()

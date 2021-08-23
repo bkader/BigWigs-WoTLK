@@ -9,6 +9,7 @@ mod:RegisterEnableMob(36612)
 mod.toggleOptions = {69076, 69057, 69055, {69138, "FLASHSHAKE"}, "bosskill"}
 
 local impaleTargets = mod:NewTargetList()
+local engage_trigger = "The Scourge will wash over this world as a swarm of death and destruction!"
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -17,7 +18,7 @@ if L then
 	L.bonestorm_cd = "~Next Bone Storm"
 	L.bonestorm_warning = "Bone Storm in 5 sec!"
 	L.coldflame_message = "Coldflame on YOU!"
-	L.engage_trigger = "The Scourge will wash over this world as a swarm of death and destruction!"
+	L.engage_trigger = engage_trigger
 end
 L = mod:GetLocale()
 
@@ -29,7 +30,7 @@ function mod:OnBossEnable()
 	self:Death("Win", 36612)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 end
 
 function mod:OnEngage()

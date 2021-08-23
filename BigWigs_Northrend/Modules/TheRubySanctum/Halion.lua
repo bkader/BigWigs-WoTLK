@@ -22,19 +22,23 @@ mod.toggleOptions = {
 -- Locals
 --
 
-local phase = 1
+local phase2warn, phase3warn
 
 --------------------------------------------------------------------------------
 -- Localization
 --
 
+local engage_trigger = "Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!"
+local phase_two_trigger = "You will find only suffering within the realm of twilight! Enter if you dare!"
+local twilight_cutter_trigger = "The orbiting spheres pulse with dark energy!"
+local meteorstrike_yell = "The heavens burn!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger =
-		"Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!"
+	L.engage_trigger = engage_trigger
 
-	L.phase_two_trigger = "You will find only suffering within the realm of twilight! Enter if you dare!"
-	L.twilight_cutter_trigger = "The orbiting spheres pulse with dark energy!"
+	L.phase_two_trigger = phase_two_trigger
+	L.twilight_cutter_trigger = twilight_cutter_trigger
 	L.twilight_cutter_warning = "Laser beams incoming!"
 	L.phase_warning = "Phase %d soon!"
 
@@ -44,7 +48,7 @@ if L then
 	L.shadow_message = "Shadow bomb"
 	L.shadow_say = "Shadow bomb on ME!"
 
-	L.meteorstrike_yell = "The heavens burn!"
+	L.meteorstrike_yell = meteorstrike_yell
 	L.meteor_warning_message = "Meteor incoming!"
 end
 L = mod:GetLocale()
@@ -71,10 +75,10 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "FireBreath", 74525, 74526, 74527, 74528)
 	self:Death("Win", 39863, 40142)
 
-	self:Emote("TwilightCutter", L["twilight_cutter_trigger"])
-	self:Yell("Engage", L["engage_trigger"])
-	self:Yell("PhaseTwo", L["phase_two_trigger"])
-	self:Yell("MeteorInc", L["meteorstrike_yell"])
+	self:Emote("TwilightCutter", L["twilight_cutter_trigger"], twilight_cutter_trigger)
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
+	self:Yell("PhaseTwo", L["phase_two_trigger"], phase_two_trigger)
+	self:Yell("MeteorInc", L["meteorstrike_yell"], meteorstrike_yell)
 
 	-- self:RegisterEvent("UNIT_HEALTH")
 
@@ -82,11 +86,12 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage(diff)
-	phase = 1
+	self:SetPhase(1)
 	self:Berserk(480)
 	self:Bar(74525, firebreath_bar, 10, 74525)
 	self:Bar(74562, fire_bar, 15, 74562)
 	self:Bar(75879, meteorstrike_bar, 30, 75879)
+	phase2warn, phase3warn = nil, nil
 end
 
 --------------------------------------------------------------------------------
@@ -96,13 +101,14 @@ end
 function mod:UNIT_HEALTH(_, unit)
 	if UnitName(unit) == self.displayName then
 		local hp = math.floor(UnitHealth(unit) / UnitHealthMax(unit) * 100)
-		if hp <= 78 and phase < 2 then
+		if hp <= 78 and not phase2warn then
 			self:Voice("phase2s")
-			phase = 2
-		elseif hp <= 53 and phase < 3 then
+			phase2warn = true
+		elseif hp <= 53 and not phase3warn then
 			self:Voice("phase3s")
-			phase = 3
+			phase3warn = true
 		elseif hp <= 50 then
+			self:SetPhase(3)
 			self:UnregisterEvent("UNIT_HEALTH")
 		end
 	end
@@ -172,7 +178,6 @@ function mod:MeteorStrike(_, spellId, _, _, spellName)
 end
 
 function mod:PhaseTwo()
-	phase = 2
-	self:Voice("phase2")
+	self:SetPhase(2)
 	self:Bar(74769, twilight_cutter_bar, 40, 74769)
 end

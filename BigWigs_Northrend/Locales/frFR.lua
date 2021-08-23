@@ -18,8 +18,7 @@ end
 
 L = BigWigs:NewBossLocale("Halion", "frFR")
 if L then
-	L.engage_trigger =
-		"Votre monde vacille au bord de l'élimination. Vous serez tous témoins de l'avènement d'une nouvelle ère de DESTRUCTION !"
+	L.engage_trigger = "Votre monde vacille au bord de l'élimination. Vous serez tous témoins de l'avènement d'une nouvelle ère de DESTRUCTION !"
 	L.phase_two_trigger = "Vous ne trouverez que souffrance au royaume du crépuscule ! Entrez si vous l'osez !"
 	L.twilight_cutter_trigger = "Les sphères volantes rayonnent d'énergie noire !"
 	L.twilight_cutter_bar = "~Tranchant du crépuscule"

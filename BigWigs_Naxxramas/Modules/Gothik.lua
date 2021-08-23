@@ -11,6 +11,10 @@ mod.toggleOptions = {"room", "add", "adddeath", "bosskill"}
 -- Localization
 --
 
+local starttrigger1 = "Foolishly you have sought your own demise."
+local starttrigger2 = "Teamanare shi rikk mannor rikk lok karkun"
+local inroomtrigger = "I have waited long enough. Now you face the harvester of souls."
+
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.room = "Room Arrival Warnings"
@@ -22,8 +26,8 @@ if L then
 	L.adddeath = "Add Death Alert"
 	L.adddeath_desc = "Alerts when an add dies."
 
-	L.starttrigger1 = "Foolishly you have sought your own demise."
-	L.starttrigger2 = "Teamanare shi rikk mannor rikk lok karkun"
+	L.starttrigger1 = starttrigger1
+	L.starttrigger2 = starttrigger2
 	L.startwarn = "Gothik the Harvester engaged! 4:30 till he's in the room."
 
 	L.rider = "Unrelenting Rider"
@@ -52,7 +56,7 @@ if L then
 	L.dkbar = "Deathknight - %d"
 	L.riderbar = "Rider - %d"
 
-	L.inroomtrigger = "I have waited long enough. Now you face the harvester of souls."
+	L.inroomtrigger = inroomtrigger
 	L.inroomwarn = "He's in the room!"
 
 	L.inroombartext = "In Room"
@@ -76,8 +80,8 @@ function mod:OnBossEnable()
 	self:Death("DKDead", 16125)
 	self:Death("RiderDead", 16126)
 	self:Death("Win", 16060)
-	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"])
-	self:Yell("InRoom", L["inroomtrigger"])
+	self:Yell("Engage", L["starttrigger1"], L["starttrigger2"], starttrigger1, starttrigger2)
+	self:Yell("InRoom", L["inroomtrigger"], inroomtrigger)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 end
 
@@ -133,6 +137,7 @@ local function newRider()
 end
 
 function mod:OnEngage()
+	self:SetPhase(1)
 	self:Message("room", L["startwarn"], "Important")
 	self:Bar("room", L["inroombartext"], 270, "Spell_Magic_LesserInvisibilty")
 	self:DelayedMessage("room", 90, L["warn1"], "Attention")
@@ -140,6 +145,7 @@ function mod:OnEngage()
 	self:DelayedMessage("room", 210, L["warn3"], "Urgent")
 	self:DelayedMessage("room", 240, L["warn4"], "Important")
 	self:DelayedMessage("room", 260, L["warn5"], "Important")
+	self:ScheduleTimer("SetPhase", 274, 2)
 	numTrainer = 1
 	numDK = 1
 	numRider = 1
@@ -157,4 +163,3 @@ end
 function mod:InRoom()
 	self:Message("room", L["inroomwarn"], "Important")
 end
-

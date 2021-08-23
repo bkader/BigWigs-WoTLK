@@ -17,13 +17,16 @@ local breath = 1
 -- Localization
 --
 
+local airphase_trigger = "Sapphiron lifts off into the air!"
+local deepbreath_trigger = "%s takes a deep breath."
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.airphase_trigger = "Sapphiron lifts off into the air!"
+	L.airphase_trigger = airphase_trigger
 	L.deepbreath_incoming_message = "Ice Bomb casting in ~14sec!"
 	L.deepbreath_incoming_soon_message = "Ice Bomb casting in ~5sec!"
 	L.deepbreath_incoming_bar = "Ice Bomb Cast"
-	L.deepbreath_trigger = "%s takes a deep breath."
+	L.deepbreath_trigger = deepbreath_trigger
 	L.deepbreath_warning = "Ice Bomb Incoming!"
 	L.deepbreath_bar = "Ice Bomb Lands!"
 
@@ -46,8 +49,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "Breath", 28524, 29318)
 	self:Log("SPELL_AURA_APPLIED", "Icebolt", 28522)
 
-	self:Emote("Airphase", L["airphase_trigger"])
-	self:Emote("Deepbreath", L["deepbreath_trigger"])
+	self:Emote("Airphase", L["airphase_trigger"], airphase_trigger)
+	self:Emote("Deepbreath", L["deepbreath_trigger"], deepbreath_trigger)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", "CheckForEngage")

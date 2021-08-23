@@ -25,16 +25,22 @@ local shadron, tenebron, vesperon = nil, nil, nil
 -- Localization
 --
 
+local engage_trigger = "It is my charge to watch over these eggs. I will see you burn before any harm comes to them!"
+local tsunami_trigger = "The lava surrounding %s churns!"
+local twilight_trigger_tenebron = "Tenebron begins to hatch eggs in the Twilight!"
+local twilight_trigger_vesperon = "A Vesperon Disciple appears in the Twilight!"
+local twilight_trigger_shadron = "A Shadron Acolyte appears in the Twilight!"
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "It is my charge to watch over these eggs. I will see you burn before any harm comes to them!"
+	L.engage_trigger = engage_trigger
 
 	L.tsunami = "Flame Wave"
 	L.tsunami_desc = "Warn for churning lava and show a bar."
 	L.tsunami_warning = "Wave in ~5sec!"
 	L.tsunami_message = "Flame Wave!"
 	L.tsunami_cooldown = "Wave Cooldown"
-	L.tsunami_trigger = "The lava surrounding %s churns!"
+	L.tsunami_trigger = tsunami_trigger
 
 	L.breath_cooldown = "~Breath Cooldown"
 
@@ -44,9 +50,9 @@ if L then
 
 	L.twilight = "Twilight Events"
 	L.twilight_desc = "Warn what happens in the Twilight."
-	L.twilight_trigger_tenebron = "Tenebron begins to hatch eggs in the Twilight!"
-	L.twilight_trigger_vesperon = "A Vesperon Disciple appears in the Twilight!"
-	L.twilight_trigger_shadron = "A Shadron Acolyte appears in the Twilight!"
+	L.twilight_trigger_tenebron = twilight_trigger_tenebron
+	L.twilight_trigger_vesperon = twilight_trigger_vesperon
+	L.twilight_trigger_shadron = twilight_trigger_shadron
 	L.twilight_message_tenebron = "Eggs hatching"
 	L.twilight_message = "%s add up!"
 end
@@ -67,10 +73,10 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "Breath", 56908, 58956)
 	self:Death("Win", 28860)
 
-	self:Emote("Tsunami", L["tsunami_trigger"])
-	self:Emote("Tenebron", L["twilight_trigger_tenebron"])
-	self:Emote("Shadron", L["twilight_trigger_shadron"])
-	self:Emote("Vesperon", L["twilight_trigger_vesperon"])
+	self:Emote("Tsunami", L["tsunami_trigger"], tsunami_trigger)
+	self:Emote("Tenebron", L["twilight_trigger_tenebron"], twilight_trigger_tenebron)
+	self:Emote("Shadron", L["twilight_trigger_shadron"], twilight_trigger_shadron)
+	self:Emote("Vesperon", L["twilight_trigger_vesperon"], twilight_trigger_vesperon)
 
 	self:Yell("Engage", L["engage_trigger"])
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")

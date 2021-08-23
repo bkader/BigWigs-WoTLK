@@ -37,6 +37,7 @@ local gasTargets = mod:NewTargetList()
 --------------------------------------------------------------------------------
 --  Localization
 --
+local engage_trigger = "I think I've perfected a plague"
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -45,7 +46,7 @@ if L then
 	L.phase_warning = "Phase %d soon!"
 	L.phase_bar = "Next Phase"
 
-	L.engage_trigger = "I think I've perfected a plague"
+	L.engage_trigger = engage_trigger
 
 	L.ball_bar = "Next bouncing goo ball"
 	L.ball_say = "Goo ball incoming!"
@@ -90,10 +91,11 @@ function mod:OnBossEnable()
 	self:Death("Win", 36678)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
-	self:Yell("Engage", L["engage_trigger"])
+	self:Yell("Engage", L["engage_trigger"], engage_trigger)
 end
 
 function mod:OnEngage(diff)
+	self:SetPhase(1)
 	self:Berserk(600)
 	p2, p3, first = nil, nil, nil
 	self:Bar(70351, L["experiment_bar"], random(30, 35), 70351)
@@ -112,11 +114,13 @@ do
 		mod:Bar(71255, L["gasbomb_bar"], 14, 71255)
 		mod:Bar(72295, L["ball_bar"], 6, 72295)
 		if not first then
+			mod:SetPhase(2)
 			mod:Message("phase", CL.phase:format(2), "Positive")
 			mod:Bar(70351, L["experiment_bar"], 25, 70351)
 			first = true
 			p2 = true
 		else
+			mod:SetPhase(3)
 			mod:Message("phase", CL.phase:format(3), "Positive")
 			first = nil
 			p3 = true

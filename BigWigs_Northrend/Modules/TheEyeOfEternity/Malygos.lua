@@ -9,14 +9,12 @@ mod:RegisterEnableMob(28859)
 mod.toggleOptions = {"phase", "sparks", "sparkbuff", "vortex", "breath", {"surge", "FLASHSHAKE"}, 57429, "berserk", "bosskill"}
 
 --------------------------------------------------------------------------------
--- Locals
---
-
-local phase = nil
-
---------------------------------------------------------------------------------
 -- Localization
 --
+local surge_trigger = "%s fixes his eyes on you!"
+local phase2_trigger = "I had hoped to end your lives quickly"
+local phase2_end_trigger = "ENOUGH! If you intend to reclaim Azeroth's magic"
+local phase3_trigger = "Now your benefactors make their"
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -43,16 +41,16 @@ if L then
 	L.surge = "Surge of Power"
 	L.surge_desc = "Warn when Malygos uses Surge of Power on you in phase 3."
 	L.surge_you = "Surge of Power on YOU!"
-	L.surge_trigger = "%s fixes his eyes on you!"
+	L.surge_trigger = surge_trigger
 
 	L.phase = "Phases"
 	L.phase_desc = "Warn for phase changes."
 	L.phase2_warning = "Phase 2 soon!"
-	L.phase2_trigger = "I had hoped to end your lives quickly"
+	L.phase2_trigger = phase2_trigger
 	L.phase2_message = "Phase 2 - Nexus Lord & Scion of Eternity!"
-	L.phase2_end_trigger = "ENOUGH! If you intend to reclaim Azeroth's magic"
+	L.phase2_end_trigger = phase2_end_trigger
 	L.phase3_warning = "Phase 3 soon!"
-	L.phase3_trigger = "Now your benefactors make their"
+	L.phase3_trigger = phase3_trigger
 	L.phase3_message = "Phase 3!"
 end
 L = mod:GetLocale()
@@ -67,9 +65,9 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "Vortex", 56105)
 	self:Death("Win", 28859)
 
-	self:Yell("Phase2", L["phase2_trigger"])
-	self:Yell("P2End", L["phase2_end_trigger"])
-	self:Yell("Phase3", L["phase3_trigger"])
+	self:Yell("Phase2", L["phase2_trigger"], phase2_trigger)
+	self:Yell("P2End", L["phase2_end_trigger"], phase2_end_trigger)
+	self:Yell("Phase3", L["phase3_trigger"], phase3_trigger)
 
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_WHISPER")
 	-- Since we don't have the actual emotes here we can't use :Emote
@@ -81,7 +79,7 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
-	phase = 1
+	self:SetPhase(1)
 	self:Bar("vortex", L["vortex_next"], 29, 56105)
 	self:DelayedMessage("vortex", 24, L["vortex_warning"], "Attention")
 	self:Bar("sparks", L["sparks"], 25, 56152)
@@ -116,18 +114,18 @@ function mod:Vortex(_, spellId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(event, msg, mob)
-	if phase == 3 and msg == L["surge_trigger"] then
+	if self.phase == 3 and (msg == L["surge_trigger"] or msg == surge_trigger) then
 		self:LocalMessage("surge", L["surge_you"], "Personal", 60936, "Alarm") -- 60936 for phase 3, not 56505
 		self:FlashShake("surge")
 	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(event, msg)
-	if phase == 1 then
+	if self.phase == 1 then
 		self:Message("sparks", L["sparks_message"], "Important", 56152, "Alert")
 		self:Bar("sparks", L["sparks"], 30, 56152)
 		self:DelayedMessage("sparks", 25, L["sparks_warning"], "Attention")
-	elseif phase == 2 then
+	elseif self.phase == 2 then
 		-- 43810 Frost Wyrm, looks like a dragon breathing 'deep breath' :)
 		-- Correct spellId for 'breath" in phase 2 is 56505
 		self:Message("breath", L["breath_message"], "Important", 43810, "Alert")
@@ -137,7 +135,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(event, msg)
 end
 
 function mod:Phase2()
-	phase = 2
+	self:SetPhase(2)
 	self:CancelDelayedMessage(L["vortex_warning"])
 	self:CancelDelayedMessage(L["sparks_warning"])
 	self:SendMessage("BigWigs_StopBar", self, L["sparks"])
@@ -154,12 +152,12 @@ function mod:P2End()
 end
 
 function mod:Phase3()
-	phase = 3
+	self:SetPhase(3)
 	self:Message("phase", L["phase3_message"], "Attention")
 end
 
 function mod:UNIT_HEALTH(event, msg)
-	if phase ~= 1 then return end
+	if self.phase ~= 1 then return end
 	if UnitName(msg) == self.displayName then
 		local hp = UnitHealth(msg) / UnitHealthMax(msg) * 100
 		if hp > 51 and hp <= 54 then
@@ -168,4 +166,3 @@ function mod:UNIT_HEALTH(event, msg)
 		end
 	end
 end
-

@@ -9,9 +9,11 @@ mod.otherMenu = "Northrend"
 mod:RegisterEnableMob(39751)
 mod.toggleOptions = {40504, 74505, 75125, "bosskill"}
 
+local engage_trigger = "Ah, the entertainment has arrived."
+
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.engage_trigger = "Ah, the entertainment has arrived."
+	L.engage_trigger = engage_trigger
 end
 
 L = mod:NewLocale("frFR")
@@ -30,7 +32,7 @@ local brandTargets = mod:NewTargetList()
 function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "Tempest", 75125)
 	self:Log("SPELL_AURA_APPLIED", "Brand", 74505)
-	self:Yell("Engage", L.engage_trigger)
+	self:Yell("Engage", L.engage_trigger, engage_trigger)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 end
 
