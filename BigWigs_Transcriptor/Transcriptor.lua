@@ -43,6 +43,7 @@ for i, v in ipairs(events) do
 	events[i] = nil
 end
 
+local ignoredEvents = TranscriptDB and TranscriptDB.ignoredEvents or TranscriptIgnore or {}
 -------------------------------------------------------------------------------
 -- Locale
 --
@@ -114,10 +115,10 @@ local function GetOptions()
 				type = "multiselect",
 				name = L["Ignored Events"],
 				get = function(info, key)
-					return TranscriptDB.ignoredEvents[key]
+					return ignoredEvents[key]
 				end,
 				set = function(info, value)
-					TranscriptDB.ignoredEvents[value] = not TranscriptDB.ignoredEvents[value]
+					ignoredEvents[value] = not ignoredEvents[value]
 				end,
 				values = events,
 				order = 20,
@@ -175,7 +176,7 @@ function plugin:OnPluginEnable()
 		self:Print(L["Your Transcriptor DB has been reset! You can still view the contents of the DB in your SavedVariables folder until you exit the game or reload your ui."])
 		TranscriptDB = {ignoredEvents = {}}
 		for k, v in next, self.db.profile.ignoredEvents do
-			TranscriptDB.ignoredEvents[k] = v
+			ignoredEvents[k] = v
 		end
 	end
 	if self.db.profile.enabled then
@@ -217,7 +218,7 @@ function plugin:Start()
 			Transcriptor:StopLog(true)
 		end
 		wipe(self.db.profile.ignoredEvents)
-		for k, v in next, TranscriptDB.ignoredEvents do
+		for k, v in next, ignoredEvents do
 			if v == true then
 				self.db.profile.ignoredEvents[k] = v
 			end
