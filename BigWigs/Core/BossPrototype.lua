@@ -2,7 +2,7 @@
 -- Prototype
 --
 
-local debug = true -- Set to true to get (very spammy) debug messages.
+local debug = nil -- Set to true to get (very spammy) debug messages.
 local dbgStr = "[DBG:%s] %s"
 local function dbg(self, msg)
 	print(dbgStr:format(self.displayName, msg))
