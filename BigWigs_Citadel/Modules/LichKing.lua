@@ -351,7 +351,6 @@ function mod:HSRemove(player, spellId)
 end
 
 function mod:RemorselessWinter(_, spellId)
-	self:SetPhase(self.phase + 0.5, "runaway")
 	self:SendMessage("BigWigs_StopBar", self, L["necroticplague_bar"])
 	self:SendMessage("BigWigs_StopBar", self, L["horror_bar"])
 	self:SendMessage("BigWigs_StopBar", self, L["infest_bar"])
@@ -365,7 +364,7 @@ function mod:RemorselessWinter(_, spellId)
 end
 
 function mod:Quake(_, spellId)
-	self:SetPhase(self.phase + 0.5)
+	self:SetPhase()
 	self:SendMessage("BigWigs_StopBar", self, L["ragingspirit_bar"])
 	self:LocalMessage(72262, L["quake_message"], "Urgent", spellId, "Alert")
 	self:Voice(72762, -1, 27)
