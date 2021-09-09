@@ -305,7 +305,7 @@ do
 				local raidIndex = UnitInRaid(unit)
 				local name, _, _, _, _, class = GetRaidRosterInfo(raidIndex + 1)
 				if name == UnitName(unit) then
-					hugged[hugged + 1] = {name, hugIcon, class}
+					hugged[#hugged + 1] = {name, hugIcon, class}
 				end
 				hugIcon = hugIcon + 1
 			end
